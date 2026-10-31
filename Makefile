@@ -1,6 +1,6 @@
 # Usage: make [MODEL=<name>] <target>
 # With no MODEL, targets apply to every model in DEFAULT_MODELS.
-DEFAULT_MODELS := power_switch_cover cable_tie_plate rack_ear
+DEFAULT_MODELS := power_switch_cover cable_tie_plate cable_tie_plate_narrow rack_ear
 MODELS := $(if $(MODEL),$(MODEL),$(DEFAULT_MODELS))
 EXTS   := stl step obj png svg
 RUN    := uv run python

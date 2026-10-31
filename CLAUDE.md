@@ -8,7 +8,7 @@ write or edit a model in `models/`. Don't re-create the scaffolding.
 
 ```sh
 make setup              # once: uv sync (Python 3.12 venv in .venv)
-make                    # export all default models (power_switch_cover, cable_tie_plate, rack_ear): build/<slug>/<slug>.{stl,step,obj,png,svg}
+make                    # export all default models (power_switch_cover, cable_tie_plate, cable_tie_plate_narrow, rack_ear): build/<slug>/<slug>.{stl,step,obj,png,svg}
 make MODEL=<name>       # export models/<name>.py into build/<slug>/ (underscores become hyphens)
 make list               # list models
 make clean              # delete build/

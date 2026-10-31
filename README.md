@@ -23,6 +23,7 @@ Each part is a [build123d](https://build123d.readthedocs.io) model. Run `make` t
 | --- | --- | --- |
 | [`power_switch_cover`](models/power_switch_cover.py) | <img src="docs/power-switch-cover.png" alt="PDU power switch cover" width="240"> | Cover for a rack PDU's power switch. A raised, hollow bubble guards the switch against accidental presses, with three light holes over it. It mounts on the lower 1U rack screw, and a corner cut-out clears the upper screw so the cover comes off without removing it. |
 | [`cable_tie_plate`](models/cable_tie_plate.py) | <img src="docs/cable-tie-plate.png" alt="Cable tie plate" width="240"> | Flat plate held by both 1U rack screws, with two 15 × 10 mm slots. Thread a cable tie or Velcro wrap through them to strap a vertical wire bundle to the rack. |
+| [`cable_tie_plate_narrow`](models/cable_tie_plate_narrow.py) | <img src="docs/cable-tie-plate-narrow.png" alt="Narrow cable tie plate" width="240"> | The cable tie plate with only the tie slot nearest the screws, trimmed to a 4 mm wall just past it (32.4 mm wide instead of 54.4 mm). The strap goes through the slot and around the cut edge. |
 | [`rack_ear`](models/rack_ear.py) | <img src="docs/rack-ear.png" alt="2U rack ear" width="240"> | Parametric rack ear (2U by default; set `RACK_UNITS`) that acts as a case's rack rail. The 2 mm front flange has EIA-310 square holes for M6 cage nuts, and the side flange screws to the inside of the case wall with one countersunk M3 screw. One part fits both sides: flip it upside down for the other hand. |
 
 All parts use EIA-310 rack geometry (1U = 44.45 mm). The two plates mount with slotted M6 holes at a 31.75 mm pitch; their screw hole's distance from the rack ear's edge is an estimate, so measure your rack before printing.
@@ -33,7 +34,7 @@ Requires [uv](https://docs.astral.sh/uv/) and make.
 
 ```sh
 make setup                      # install deps into .venv (run once)
-make                            # export all models (power_switch_cover, cable_tie_plate, rack_ear)
+make                            # export all models (power_switch_cover, cable_tie_plate, cable_tie_plate_narrow, rack_ear)
 make MODEL=cable_tie_plate      # export models/cable_tie_plate.py into build/cable-tie-plate/
 make png MODEL=cable_tie_plate  # export only if build/cable-tie-plate/cable-tie-plate.png is stale
 make view MODEL=cable_tie_plate # export and show in the OCP viewer (needs it running)

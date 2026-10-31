@@ -49,13 +49,13 @@ PLATE_TOP_EDGE_R = 1.0  # outer top edge of the plate
 BOTTOM_EDGE_R = 0.5  # outer edge of the underside (kept small for the print bed)
 
 
-def build() -> Part:
+def build(tie_slots: int = 2, edge_margin: float = EDGE_MARGIN) -> Part:
     screw_x = -HOLE_X_FROM_RIGHT_EDGE
     # Worst case the screw sits at the left end of its slot
     head_left = screw_x - (SLOT_LENGTH - SLOT_WIDTH) / 2 - SCREW_HEAD_DIA / 2
     tie_x1 = head_left - TIE_SLOT_GAP_FROM_HEAD - TIE_SLOT_WIDTH / 2
-    tie_x2 = tie_x1 - TIE_SLOT_SPACING
-    plate_w = -(tie_x2 - TIE_SLOT_WIDTH / 2) + EDGE_MARGIN
+    tie_xs = [tie_x1 - i * TIE_SLOT_SPACING for i in range(tie_slots)]
+    plate_w = -(tie_xs[-1] - TIE_SLOT_WIDTH / 2) + edge_margin
     eps = 1e-3
 
     with BuildPart() as part:
@@ -73,7 +73,7 @@ def build() -> Part:
             with Locations((screw_x, HOLE_PITCH_Y / 2), (screw_x, -HOLE_PITCH_Y / 2)):
                 SlotOverall(SLOT_LENGTH, SLOT_WIDTH)
             # Tie slots run vertically, parallel to the bundle
-            with Locations((tie_x1, 0), (tie_x2, 0)):
+            with Locations(*[(x, 0) for x in tie_xs]):
                 SlotOverall(TIE_SLOT_LENGTH, TIE_SLOT_WIDTH, rotation=90)
         extrude(holes.sketch, amount=THICKNESS, mode=Mode.SUBTRACT)
     return part.part
