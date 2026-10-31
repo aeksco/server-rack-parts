@@ -6,9 +6,9 @@ Requires [uv](https://docs.astral.sh/uv/) and make.
 
 ```sh
 make setup              # install deps into .venv (run once)
-make                    # export build/plate.{stl,step,obj,png,svg}
-make MODEL=mypart       # export models/mypart.py
-make png MODEL=mypart   # export only if build/mypart.png is stale
+make                    # export build/power-switch-cover/power-switch-cover.{stl,step,obj,png,svg}
+make MODEL=my_part      # export models/my_part.py into build/my-part/
+make png MODEL=my_part  # export only if build/my-part/my-part.png is stale
 make list               # list available models
 make help               # show all targets
 ```

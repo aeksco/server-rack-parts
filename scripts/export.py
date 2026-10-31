@@ -1,4 +1,5 @@
-"""Export a model from models/<name>.py to build/<name>.{stl,step,obj,png,svg}.
+"""Export a model from models/<name>.py to build/<slug>/<slug>.{stl,step,obj,png,svg},
+where <slug> is <name> with underscores replaced by hyphens.
 
 The PNG is a shaded isometric render for a quick visual check.
 The SVG is the underside outline at true 1:1 scale in mm (print at 100%).
@@ -33,17 +34,19 @@ def main() -> int:
         print(f"error: {args.name}.build() produced an invalid shape", file=sys.stderr)
         return 1
 
-    BUILD_DIR.mkdir(exist_ok=True)
-    stl_path = BUILD_DIR / f"{args.name}.stl"
-    step_path = BUILD_DIR / f"{args.name}.step"
+    slug = args.name.replace("_", "-")
+    out_dir = BUILD_DIR / slug
+    out_dir.mkdir(parents=True, exist_ok=True)
+    stl_path = out_dir / f"{slug}.stl"
+    step_path = out_dir / f"{slug}.step"
     export_stl(shape, str(stl_path))
     export_step(shape, str(step_path))
-    obj_path = BUILD_DIR / f"{args.name}.obj"
+    obj_path = out_dir / f"{slug}.obj"
     export_obj(shape, str(obj_path))
-    png_path = BUILD_DIR / f"{args.name}.png"
+    png_path = out_dir / f"{slug}.png"
     render_isometric(shape, png_path)
 
-    svg_path = BUILD_DIR / f"{args.name}.svg"
+    svg_path = out_dir / f"{slug}.svg"
     # Underside face (the one against the panel): plate outline, slots and pocket opening
     top = shape.faces().sort_by(Axis.Z).first
     svg = ExportSVG(unit=Unit.MM, scale=1, margin=5, line_weight=0.2)

@@ -1,19 +1,20 @@
 # Usage: make [MODEL=example] <target>
-MODEL ?= plate
+MODEL ?= power_switch_cover
+OUT   := build/$(subst _,-,$(MODEL))/$(subst _,-,$(MODEL))
 RUN   := uv run python
 
 .PHONY: all stl step obj png svg setup view clean list help
 
-all: build/$(MODEL).stl build/$(MODEL).step build/$(MODEL).obj build/$(MODEL).png build/$(MODEL).svg ## Export STL + STEP + OBJ + isometric PNG + SVG for MODEL (default: plate)
+all: $(OUT).stl $(OUT).step $(OUT).obj $(OUT).png $(OUT).svg ## Export STL + STEP + OBJ + isometric PNG + SVG for MODEL (default: power_switch_cover)
 
-stl: build/$(MODEL).stl ## Export STL only
-step: build/$(MODEL).step ## Export STEP only
-obj: build/$(MODEL).obj ## Export OBJ only
-png: build/$(MODEL).png ## Export isometric render only
-svg: build/$(MODEL).svg ## Export underside outline only
+stl: $(OUT).stl ## Export STL only
+step: $(OUT).step ## Export STEP only
+obj: $(OUT).obj ## Export OBJ only
+png: $(OUT).png ## Export isometric render only
+svg: $(OUT).svg ## Export underside outline only
 
 # All outputs come from one run; rebuild when the model or exporter changes.
-build/$(MODEL).stl build/$(MODEL).step build/$(MODEL).obj build/$(MODEL).png build/$(MODEL).svg: models/$(MODEL).py scripts/export.py scripts/render.py
+$(OUT).stl $(OUT).step $(OUT).obj $(OUT).png $(OUT).svg: models/$(MODEL).py scripts/export.py scripts/render.py
 	$(RUN) scripts/export.py $(MODEL)
 
 setup: ## Install dependencies into .venv

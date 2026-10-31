@@ -8,15 +8,16 @@ write or edit a model in `models/`. Don't re-create the scaffolding.
 
 ```sh
 make setup              # once: uv sync (Python 3.12 venv in .venv)
-make                    # export default model (plate): build/plate.{stl,step,obj,png,svg}
-make MODEL=<name>       # export models/<name>.py
+make                    # export default model (power_switch_cover): build/power-switch-cover/power-switch-cover.{stl,step,obj,png,svg}
+make MODEL=<name>       # export models/<name>.py into build/<slug>/ (underscores become hyphens)
 make list               # list models
 make clean              # delete build/
 make view MODEL=<name>  # push to OCP viewer (optional; needs viewer running)
 ```
 
-Outputs land in `build/` (gitignored): `<name>.stl` for slicers, `<name>.svg` (underside outline, true 1:1 mm scale, print at 100%), `<name>.step`
-for CAD, `<name>.obj` for mesh tools, `<name>.png` an isometric render. Look at
+Outputs land in `build/<slug>/` (gitignored), where `<slug>` is the model name with
+underscores replaced by hyphens: `<slug>.stl` for slicers, `<slug>.svg` (underside outline, true 1:1 mm scale, print at 100%), `<slug>.step`
+for CAD, `<slug>.obj` for mesh tools, `<slug>.png` an isometric render. Look at
 the PNG to check the shape visually.
 
 ## Layout
@@ -43,7 +44,7 @@ pyproject.toml       deps managed by uv (build123d, numpy, pillow; ocp-vscode as
 - Use the builder API (`with BuildPart() as p:`) and return `p.part`.
 - Z is up. Use `Align.MIN` on Z to sit a box on the XY plane.
 - `Mode.SUBTRACT` cuts holes; give cutters extra length so they pass fully through.
-- Fillet/chamfer **early** (see models/plate.py: select edges by position, cut pockets last), on simple geometry, before unioning more features.
+- Fillet/chamfer **early** (see models/power_switch_cover.py: select edges by position, cut pockets last), on simple geometry, before unioning more features.
   Filleting edges at junctions of merged solids often raises
   `Failed creating a fillet`; use a smaller radius, `max_fillet()`, or restructure.
 - Docs: https://build123d.readthedocs.io
