@@ -32,7 +32,7 @@ Requires [uv](https://docs.astral.sh/uv/) and make.
 
 ```sh
 make setup                      # install deps into .venv (run once)
-make                            # export the default model, power_switch_cover
+make                            # export both models (power_switch_cover, cable_tie_plate)
 make MODEL=cable_tie_plate      # export models/cable_tie_plate.py into build/cable-tie-plate/
 make png MODEL=cable_tie_plate  # export only if build/cable-tie-plate/cable-tie-plate.png is stale
 make view MODEL=cable_tie_plate # export and show in the OCP viewer (needs it running)
