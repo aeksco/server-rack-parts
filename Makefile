@@ -2,15 +2,18 @@
 MODEL ?= plate
 RUN   := uv run python
 
-.PHONY: all stl step setup view clean list help
+.PHONY: all stl step obj png svg setup view clean list help
 
-all: build/$(MODEL).stl build/$(MODEL).step build/$(MODEL).svg ## Export STL + STEP + SVG for MODEL (default: plate)
+all: build/$(MODEL).stl build/$(MODEL).step build/$(MODEL).obj build/$(MODEL).png build/$(MODEL).svg ## Export STL + STEP + OBJ + isometric PNG + SVG for MODEL (default: plate)
 
 stl: build/$(MODEL).stl ## Export STL only
 step: build/$(MODEL).step ## Export STEP only
+obj: build/$(MODEL).obj ## Export OBJ only
+png: build/$(MODEL).png ## Export isometric render only
+svg: build/$(MODEL).svg ## Export underside outline only
 
-# Both files come from one run; rebuild when the model or exporter changes.
-build/$(MODEL).stl build/$(MODEL).step build/$(MODEL).svg: models/$(MODEL).py scripts/export.py
+# All outputs come from one run; rebuild when the model or exporter changes.
+build/$(MODEL).stl build/$(MODEL).step build/$(MODEL).obj build/$(MODEL).png build/$(MODEL).svg: models/$(MODEL).py scripts/export.py scripts/render.py
 	$(RUN) scripts/export.py $(MODEL)
 
 setup: ## Install dependencies into .venv

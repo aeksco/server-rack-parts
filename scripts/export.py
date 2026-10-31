@@ -1,5 +1,6 @@
-"""Export a model from models/<name>.py to build/<name>.{stl,step,svg}.
+"""Export a model from models/<name>.py to build/<name>.{stl,step,obj,png,svg}.
 
+The PNG is a shaded isometric render for a quick visual check.
 The SVG is the underside outline at true 1:1 scale in mm (print at 100%).
 
 Usage: uv run python scripts/export.py <name> [--view]
@@ -10,7 +11,9 @@ import importlib
 import sys
 from pathlib import Path
 
-from build123d import Axis, Location, ExportSVG, LineType, Unit, export_step, export_stl
+from build123d import Axis, Location, ExportSVG, LineType, Unit, export_obj, export_step, export_stl
+
+from render import render_isometric
 
 ROOT = Path(__file__).resolve().parent.parent
 BUILD_DIR = ROOT / "build"
@@ -35,6 +38,10 @@ def main() -> int:
     step_path = BUILD_DIR / f"{args.name}.step"
     export_stl(shape, str(stl_path))
     export_step(shape, str(step_path))
+    obj_path = BUILD_DIR / f"{args.name}.obj"
+    export_obj(shape, str(obj_path))
+    png_path = BUILD_DIR / f"{args.name}.png"
+    render_isometric(shape, png_path)
 
     svg_path = BUILD_DIR / f"{args.name}.svg"
     # Underside face (the one against the panel): plate outline, slots and pocket opening
@@ -47,7 +54,8 @@ def main() -> int:
     bb = shape.bounding_box()
     print(f"volume: {shape.volume:.1f} mm^3")
     print(f"bbox:   {bb.size.X:.1f} x {bb.size.Y:.1f} x {bb.size.Z:.1f} mm")
-    print(f"wrote:  {", ".join(str(p.relative_to(ROOT)) for p in (stl_path, step_path, svg_path))}")
+    written = ", ".join(str(p.relative_to(ROOT)) for p in (stl_path, step_path, obj_path, png_path, svg_path))
+    print(f"wrote:  {written}")
 
     if args.view:
         from ocp_vscode import show

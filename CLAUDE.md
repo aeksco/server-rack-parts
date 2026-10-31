@@ -8,7 +8,7 @@ write or edit a model in `models/`. Don't re-create the scaffolding.
 
 ```sh
 make setup              # once: uv sync (Python 3.12 venv in .venv)
-make                    # export default model (plate): build/plate.{stl,step,svg}
+make                    # export default model (plate): build/plate.{stl,step,obj,png,svg}
 make MODEL=<name>       # export models/<name>.py
 make list               # list models
 make clean              # delete build/
@@ -16,15 +16,17 @@ make view MODEL=<name>  # push to OCP viewer (optional; needs viewer running)
 ```
 
 Outputs land in `build/` (gitignored): `<name>.stl` for slicers, `<name>.svg` (underside outline, true 1:1 mm scale, print at 100%), `<name>.step`
-for CAD.
+for CAD, `<name>.obj` for mesh tools, `<name>.png` an isometric render. Look at
+the PNG to check the shape visually.
 
 ## Layout
 
 ```
 models/<name>.py     one file per part; must define build() -> Part
-scripts/export.py    generic exporter; imports models.<name>, calls build(), writes STL+STEP
+scripts/export.py    generic exporter; imports models.<name>, calls build(), writes STL+STEP+OBJ+PNG+SVG
+scripts/render.py    shaded isometric PNG render (numpy z-buffer, headless)
 Makefile             thin wrapper around the exporter
-pyproject.toml       deps managed by uv (build123d; ocp-vscode as dev dep)
+pyproject.toml       deps managed by uv (build123d, numpy, pillow; ocp-vscode as dev dep)
 ```
 
 ## Making a new part
